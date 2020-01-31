@@ -21,28 +21,28 @@ class CalculatorDiscount
      * @return bool
      */
     private function VerifyRule($condition,$discount_id){
-        $eligible = false;
+        $eligible = true;
         $status_verify = $this->config['status_verify'];//优惠活动的状态验证
         $time_verify = $this->config['time_verify'];//优惠活动的时间验证
         $discountModel = $this->config['discount_model'];
         $discount = $discountModel::with(['discount_action','discount_rules'])->where('id',$discount_id)->first();
         if (!$discount){
-            return  $eligible;
+            return  false;
         }
         $discount = $discount->toArray();
         if ($status_verify === true && $discount['status'] == 2){
-            return  $eligible;
+            return  false;
         }
         if ($time_verify === true){
             $start = strtotime($discount['start_time']);
             $end = strtotime($discount['end_time']);
             $now = time();
             if ($now >= $start && $now <= $end){
-                return  $eligible;
+                return  false;
             }
         }
         if (!$discount['discount_rules']){
-            return  $eligible;
+            return  true;
         }
         $configuration = json_decode($discount['discount_rules']['configuration'], true);
         switch ($discount['discount_rules']['type']){
@@ -58,5 +58,37 @@ class CalculatorDiscount
             default ;
         }
         return  $eligible;
+    }
+    /**
+     * 获取优惠的金额
+     * @param $discount_id 优惠记录的ID
+     * @param $total 订单总金额
+     * @return  integer
+     * */
+    public function getDiscountAction($discount_id,$total){
+        $amount = 0;
+        $discountModel = $this->config['discount_model'];
+        $discount = $discountModel::with(['discount_action','discount_rules'])->where('id',$discount_id)->first();
+        if (!$discount){
+            return  $amount;
+        }
+        $discount = $discount->toArray();
+        if (!$discount['discount_action']){
+            return  $amount;
+        }
+        $configuration = $discount['discount_action']['configuration']?json_decode($discount['discount_action']['configuration'], true):[];
+        switch ($discount['discount_action']['type']){
+            case 'order_total' : //订单总金额满减
+                $amount = isset($configuration['amount']) ? $configuration['amount'] : 0;
+                break;
+            case 'order_ratio' ://折扣
+                $amount = isset($configuration['ratio'])?$total*(100 - $configuration['ratio'])/100:0;
+                break;
+            case 'order_reduce' : //立减
+                $amount = isset($configuration['amount']) ? $configuration['amount'] : 0;
+                break;
+            default ;
+        }
+        return  $amount;
     }
 }
