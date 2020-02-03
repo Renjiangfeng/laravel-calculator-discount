@@ -13,7 +13,6 @@ class RenLaravelCalculatorServiceProvider extends ServiceProvider
      */
     public function register()
     {
-//        $this->app->singleton('Eric\LaravelCalculator\Mortgage\Mortgage');
         $this->mergeConfigFrom(
             __DIR__.'/../config/laravel-calculator-discount.php', 'laravel-calculator-discount'
         );
@@ -29,9 +28,9 @@ class RenLaravelCalculatorServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/../config/laravel-calculator-discount.php' => config_path('laravel-calculator-discount.php'),
             __DIR__ . '/../database/migrations/' => database_path('/migrations'),
-            __DIR__ . '/../model/Discount.php'     => app_path('Discount.php'),
-            __DIR__ . '/../model/DiscountAction.php'     => app_path('DiscountAction.php'),
-            __DIR__ . '/../model/DiscountRule.php'     => app_path('DiscountRule.php'),
+            __DIR__ . '/../model/Discount.php'     => app_path('/models/Discount.php'),
+            __DIR__ . '/../model/DiscountAction.php'     => app_path('/models/DiscountAction.php'),
+            __DIR__ . '/../model/DiscountRule.php'     => app_path('/models/DiscountRule.php'),
         ]);
         $this->loadRoutesFrom(__DIR__.'/routes.php');
     }

@@ -1,5 +1,5 @@
 {
-    "name": "Eric/laravel-calculator-discount",
+    "name": "renjiangfeng/laravel-calculator-discount",
     "license": "MIT",
     "authors": [
         {
@@ -18,7 +18,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Eric\\LaravelCalculator\\RenLaravelCalculatorServiceProvider"
+                "Eric\\LaravelCalculatorDiscount\\RenLaravelCalculatorServiceProvider"
             ]
         }
     }
