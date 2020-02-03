@@ -4,7 +4,7 @@
 
 # 安装
 
-`composer create-project zgldh/scaffold your-project-dir`
+`composer require renjiangfeng/laravel-calculator-discount`
 
 
 # 开始使用
