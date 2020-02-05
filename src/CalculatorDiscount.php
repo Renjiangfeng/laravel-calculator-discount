@@ -20,7 +20,7 @@ class CalculatorDiscount
      * @param  integer $discount_id  优惠的ID
      * @return bool
      */
-    private function VerifyRule($condition,$discount_id){
+    public function VerifyRule($condition,$discount_id){
         $eligible = true;
         $status_verify = $this->config['status_verify'];//优惠活动的状态验证
         $time_verify = $this->config['time_verify'];//优惠活动的时间验证
