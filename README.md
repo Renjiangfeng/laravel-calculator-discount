@@ -72,4 +72,46 @@
     'discount_rule_model'   => App\DiscountRule::class,
 ];
 ```
+#### 使用说明
+```php
+<?php
 
+namespace App\Http\Controllers;
+
+use Eric\LaravelCalculatorDiscount\CalculatorDiscount;
+
+class IndexController extends Controller
+{
+    public function index(){
+      $CalculatorDiscount =   new CalculatorDiscount();
+      //优惠类型：订单总金额
+      $condition = [
+            'amount'=>20000
+        ];
+        //优惠类型：固定分类
+        $condition = [
+            'category_id'=>1
+            //'category_id'=>[1,2]
+        ];
+        //优惠类型：固定商品
+        $condition = [
+            'product_id'=>1
+            //'product_id'=>[1,2]
+        ];
+      $discount_id = 7;//优惠记录ID
+       $res =  $CalculatorDiscount->VerifyRule($condition,$discount_id);
+        return $res;
+        // $res  true  代表满足优惠条件
+        // $res  false  代表不满足优惠条件
+    }
+    public function action(){
+        $CalculatorDiscount =   new CalculatorDiscount();
+        $total = 20000;//订单总金额
+        $discount_id = 7;//优惠记录ID
+        $Discounted_price =  $CalculatorDiscount->getDiscountAction($discount_id,$total);
+        return $Discounted_price;//优惠的金额
+    }
+}
+
+
+```
